@@ -12,8 +12,8 @@ if __name__ == '__main__':
     # loop_split_rangeを初期化する
     loop_split_range = df.at[0, 'split_range']
 
-    # docxにsplit_rangeを追加する
-    doc.add_paragraph(loop_split_range)
+    # docxにsplit_rangeを見出しとして追加する
+    doc.add_heading(loop_split_range, level=1)
 
     # dfをforループで処理する
     for index, row in df.iterrows():
@@ -33,7 +33,7 @@ if __name__ == '__main__':
             loop_split_range = row['split_range']
 
             # docxにsplit_rangeを追加する
-            doc.add_paragraph(row['split_range'])
+            doc.add_heading(loop_split_range, level=1)
         
         # docxにsummaryを追加する
         doc.add_paragraph(summary)
