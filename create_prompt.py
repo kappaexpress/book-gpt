@@ -160,7 +160,7 @@ if __name__ == "__main__":
         file_name = "prompt/prompt_" + str(i).zfill(4) + ".txt"
 
         # promptにindexを追加する どのpromptがどのファイルに対応しているかを把握するため
-        prompt["index"] = i
+        prompt["file_name"] = file_name
 
         # promptを保存する
         with open(file_name, "w") as f:
@@ -169,5 +169,5 @@ if __name__ == "__main__":
     # promptsをdfに変換する
     df_prompts = pd.DataFrame(prompts)
 
-    # df_promptsのindex列とsplit_range列をCSVに保存する
-    df_prompts[["index", "split_range"]].to_csv("tmp/index.csv", index=False)
+    # df_promptsのfile_name列とsplit_range列をCSVに保存する
+    df_prompts[["file_name", "split_range"]].to_csv("tmp/index.csv", index=False)
