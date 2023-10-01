@@ -1,3 +1,4 @@
+from time import sleep
 import openai
 import settings
 import key
@@ -24,12 +25,14 @@ def get_prompt_file_names():
 # 1threadで処理する関数
 def one_thread(file_name: str):
     prompt = read_file(file_name)
+    print(file_name)
 
     try:
         summary = generate_summary(prompt)
+        sleep(settings.sleep_time)
     except Exception as e:
-        print(file_name)
         print(e)
+        summary = str(e)
 
     write_file(file_name, summary)
 

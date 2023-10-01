@@ -36,8 +36,10 @@ context: str = '''あなたはプロの文章要約者です'''
 # モデルの設定
 model: str = "gpt-3.5-turbo"
 # temperatureの設定
-temperature: float = 0.01
+temperature: float = 0.1
 # top_pの設定
 top_p: float = 1
 # max_tokensの設定
 max_tokens: int = 1006
+# 実行時のsleep時間(短いとRate Limitのエラーが発生する)
+sleep_time: int = 20
