@@ -28,7 +28,7 @@ def one_thread(file_name: str):
     print(file_name)
 
     try:
-        summary = generate_summary(prompt)
+        summary = generate_text_instruct(prompt)
         sleep(settings.sleep_time)
     except Exception as e:
         print(e)
@@ -58,6 +58,18 @@ def generate_summary(prompt: str) -> str:
     )
 
     return response['choices'][0]['message']['content']
+
+
+# instructモデルを使用してテキストを生成する関数
+def generate_text_instruct(prompt):
+    response = openai.Completion.create(
+        model="gpt-3.5-turbo-instruct",
+        prompt=prompt,
+        temperature=settings.temperature,
+        top_p=settings.top_p,
+        max_tokens=settings.max_tokens,
+    )
+    return response['choices'][0]['text']
 
 
 # ファイル名に基づいて書き込みを行う関数
