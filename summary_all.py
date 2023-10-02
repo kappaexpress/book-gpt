@@ -28,7 +28,7 @@ def one_thread(file_name: str):
     print(file_name)
 
     try:
-        summary = generate_text_instruct(prompt)
+        summary = generate_summary(prompt)
         sleep(settings.sleep_time)
     except Exception as e:
         print(e)

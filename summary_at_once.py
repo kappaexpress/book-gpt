@@ -34,6 +34,6 @@ if __name__ == "__main__":
     with open("prompt/prompt_0002.txt") as f:
         prompt = f.read()
 
-    response = generate_text_instruct(prompt)
+    response = generate_text(prompt)
 
     print(response)
