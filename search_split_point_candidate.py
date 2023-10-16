@@ -14,7 +14,7 @@ if __name__ == "__main__":
         lambda x: x > settings.width_threshold)
 
     # 1列に表示する文字数を指定する
-    pd.set_option("display.max_colwidth", 30)
+    pd.set_option("display.max_colwidth", 25)
 
     # 表示する行数を指定する
     pd.set_option("display.max_rows", 200)
@@ -22,13 +22,18 @@ if __name__ == "__main__":
     # 表示する際に日本語がずれるのを防ぐ
     pd.set_option("display.unicode.east_asian_width", True)
 
+    # width_is_overがTrueの行のみを抽出する
+    df = df[df["width_is_over"] == True]
+
+    # sizeが15以上の行のみを抽出する
+    df = df[df["size"] >= 13]
+
     # width_is_overがTrueの行のみ表示する
-    print(df[df["width_is_over"] == True]
-          [["text", "page_num", "between_line", "width_is_over", "size"]])
+    print(df[["text", "page_num", "between_line", "width_is_over", "size"]])
 
     # width_is_overがTrueの行のみCSVに出力する
-    df[df["width_is_over"] == True][["text", "page_num", "size",
-                                     "between_line", "width_is_over"]].to_csv("tmp/split_point_candidate.csv", index=True)
+    df[["text", "page_num", "size", "between_line", "width_is_over"]].to_csv(
+        "tmp/split_point_candidate.csv", index=True)
 
     # split_point.csvというファイルを作成する
     # すでに存在する場合は、作成しない
