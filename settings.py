@@ -14,7 +14,7 @@ width_threshold: int = 15
 
 # create_prompt.pyの設定
 # 1つのpromptに含めるページ数
-page_in_prompt: int = 2
+page_in_prompt: int = 4
 # GPTに入力する命令
 order: str = '''
 #制約条件
@@ -34,7 +34,7 @@ order: str = '''
 # GPTに与える文脈
 context: str = '''あなたはプロの編集者です。以下の制約条件に従って、入力する文章を箇条書きで要約してください。'''
 # モデルの設定
-model: str = "gpt-3.5-turbo-16k"
+model: str = "gpt-3.5-turbo"
 # temperatureの設定
 temperature: float = 0.01
 # top_pの設定
