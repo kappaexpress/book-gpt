@@ -1,22 +1,22 @@
 # read_pdf.pyの設定
 # 本とページ番号を合わせるために引く数
-page_num_adjustment: int = 21
+page_num_adjustment: int = 1
 # 処理を行う最初のページ
-first_page: int = 24
+first_page: int = 29
 # 処理を行う最後のページ
-last_page: int = 281
+last_page: int = 290
 # pdfのパス
 pdf_path: str = "book.pdf"
 
 # search_split_point_candidate.pyの設定
 # 列幅の閾値
-width_threshold: int = 35
+width_threshold: int = 15
 
 # create_prompt.pyの設定
 # 1つのpromptに含めるページ数
 page_in_prompt: int = 2
 # GPTに入力する命令
-order: str = '''入力された文章を制約条件に従って要約してください。
+order: str = '''
 #制約条件
 ・重要なキーワードを取りこぼさない。
 ・文章の意味を変更しない。
@@ -32,11 +32,11 @@ order: str = '''入力された文章を制約条件に従って要約してく�
 
 # summary.pyの設定
 # GPTに与える文脈
-context: str = '''あなたはプロの文章要約者です'''
+context: str = '''あなたはプロの編集者です。以下の制約条件に従って、入力する文章を箇条書きで要約してください。'''
 # モデルの設定
-model: str = "gpt-3.5-turbo"
+model: str = "gpt-3.5-turbo-16k"
 # temperatureの設定
-temperature: float = 0.1
+temperature: float = 0.01
 # top_pの設定
 top_p: float = 1
 # max_tokensの設定
