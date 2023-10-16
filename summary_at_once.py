@@ -9,7 +9,10 @@ openai.api_key = key.api_key
 def generate_text(prompt):
     response = openai.ChatCompletion.create(
         model=settings.model,
-        prompt=prompt,
+        messages=[
+            {"role": "system", "content": settings.context},
+            {"role": "user", "content": prompt},
+        ],
         temperature=settings.temperature,
         top_p=settings.top_p,
         max_tokens=settings.max_tokens,
