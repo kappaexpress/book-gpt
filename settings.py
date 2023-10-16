@@ -1,6 +1,6 @@
 # read_pdf.pyの設定
 # 本とページ番号を合わせるために引く数
-page_num_adjustment: int = 1
+page_num_adjustment: int = 5
 # 処理を行う最初のページ
 first_page: int = 29
 # 処理を行う最後のページ
