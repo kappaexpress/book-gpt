@@ -24,11 +24,15 @@ def extract_vertical_text(page: fitz.fitz.Page) -> pd.DataFrame:
 
 # bboxの列をパースする関数
 def parse_bbox(df: pd.DataFrame) -> pd.DataFrame:
-    df["bbox_0"] = df["bbox"].apply(lambda x: x[0])
-    df["bbox_1"] = df["bbox"].apply(lambda x: x[1])
-    df["bbox_2"] = df["bbox"].apply(lambda x: x[2])
-    df["bbox_3"] = df["bbox"].apply(lambda x: x[3])
-    return df
+    try:
+        df["bbox_0"] = df["bbox"].apply(lambda x: x[0])
+        df["bbox_1"] = df["bbox"].apply(lambda x: x[1])
+        df["bbox_2"] = df["bbox"].apply(lambda x: x[2])
+        df["bbox_3"] = df["bbox"].apply(lambda x: x[3])
+        return df
+    except KeyError:
+        # 空のdfを返す
+        return pd.DataFrame()
 
 
 # 1列の幅を計算する関数
@@ -51,6 +55,10 @@ def create_df_from_page(page: fitz.fitz.Page) -> pd.DataFrame:
 
     # bboxの列をパースする
     df = parse_bbox(df)
+
+    # dfが空の場合はcontinueする
+    if df.empty:
+        return df
 
     # 1列の幅を計算する
     df = calc_line_width(df)
@@ -75,6 +83,8 @@ if __name__ == "__main__":
     dfs = []
 
     for page_num in page_range:
+        print(f"page_num: {page_num}")
+
         # ページを読み込む
         page: fitz.fitz.Page = doc.load_page(page_num)
 
