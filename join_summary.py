@@ -27,7 +27,7 @@ if __name__ == '__main__':
         # その行のsplit_rangeがloop_split_rangeと異なる場合
         if row['split_range'] != loop_split_range:
             # docxに改ページを追加する
-            doc.add_page_break()
+            # doc.add_page_break()
             
             # loop_split_rangeを更新する
             loop_split_range = row['split_range']
