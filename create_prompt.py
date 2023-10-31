@@ -3,9 +3,8 @@ import pandas as pd
 import pickle
 import settings
 
+
 # tmp/split_point.csvを読み込む関数
-
-
 def read_split_point() -> pd.DataFrame:
     return pd.read_csv("tmp/split_point.csv")
 
@@ -165,9 +164,10 @@ if __name__ == "__main__":
         # promptを保存する
         with open(file_name, "w") as f:
             f.write(prompt["prompt"])
-    
+
     # promptsをdfに変換する
     df_prompts = pd.DataFrame(prompts)
 
     # df_promptsのfile_name列とsplit_range列をCSVに保存する
-    df_prompts[["file_name", "split_range"]].to_csv("tmp/index.csv", index=False)
+    df_prompts[["file_name", "split_range"]].to_csv(
+        "tmp/index.csv", index=False)
