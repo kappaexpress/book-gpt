@@ -1,20 +1,22 @@
 # read_pdf.pyの設定
 # 本とページ番号を合わせるために引く数
-page_num_adjustment: int = 5
+page_num_adjustment: int = 9
 # 処理を行う最初のページ
-first_page: int = 29
+first_page: int = 10
 # 処理を行う最後のページ
-last_page: int = 290
+last_page: int = 215
 # pdfのパス
 pdf_path: str = "book.pdf"
 
 # search_split_point_candidate.pyの設定
 # 列幅の閾値
-width_threshold: int = 15
+width_threshold: int = 13
+# フォントサイズの閾値
+font_size_threshold: int = 9.5
 
 # create_prompt.pyの設定
 # 1つのpromptに含めるページ数
-page_in_prompt: int = 4
+page_in_prompt: int = 2
 # GPTに入力する命令
 order: str = '''
 #制約条件
