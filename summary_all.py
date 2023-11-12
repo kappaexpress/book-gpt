@@ -30,11 +30,10 @@ def one_thread(file_name: str):
     try:
         summary = generate_summary(prompt)
         sleep(settings.sleep_time)
+        write_file(file_name, summary)
     except Exception as e:
-        print(e)
-        summary = str(e)
+        print(file_name+": "+str(e))
 
-    write_file(file_name, summary)
 
 
 # ファイル名に基づいて読み込みを行う関数
