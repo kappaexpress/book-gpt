@@ -11,9 +11,11 @@ if __name__ == '__main__':
 
     # loop_split_rangeを初期化する
     loop_split_range = df.at[0, 'split_range']
+    # titleを初期化する
+    title = df.at[0, 'title']
 
     # docxにsplit_rangeを見出しとして追加する
-    doc.add_heading(loop_split_range, level=1)
+    doc.add_heading(loop_split_range+" "+title, level=1)
 
     # dfをforループで処理する
     for index, row in df.iterrows():
