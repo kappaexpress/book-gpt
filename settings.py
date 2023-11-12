@@ -10,9 +10,9 @@ pdf_path: str = "book.pdf"
 
 # search_split_point_candidate.pyの設定
 # 列幅の閾値
-width_threshold: int = 13
+width_threshold: int = 10
 # フォントサイズの閾値
-font_size_threshold: int = 9.5
+font_size_threshold: int = 9.58
 
 # create_prompt.pyの設定
 # 1つのpromptに含めるページ数
