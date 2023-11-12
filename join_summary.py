@@ -15,7 +15,7 @@ if __name__ == '__main__':
     title = df.at[0, 'title']
 
     # docxにsplit_rangeを見出しとして追加する
-    doc.add_heading(loop_split_range+" "+title, level=1)
+    doc.add_heading(title, level=1)
 
     # dfをforループで処理する
     for index, row in df.iterrows():
@@ -38,7 +38,7 @@ if __name__ == '__main__':
             title = row['title']
 
             # docxにsplit_rangeを追加する
-            doc.add_heading(loop_split_range+" "+title, level=1)
+            doc.add_heading(title, level=1)
         
         # docxにsummaryを追加する
         doc.add_paragraph(summary)
