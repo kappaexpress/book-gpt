@@ -12,8 +12,18 @@ def check_df(df: pd.DataFrame) -> None:
         print(c, df.at[0, c])
         print(c, df.at[last_index, c])
 
-    # page_numが96の行のtext, size, between_lineを表示する
-    print(df[df["page_num"] == 1][["text", "size", "between_line"]])
+    # page_numのtext, size, between_lineを表示する
+    print(
+        df[df["page_num"] == (settings.first_page - settings.page_num_adjustment)][
+            ["text", "size", "between_line"]
+        ]
+    )
+    print(
+        df[df["page_num"] == settings.last_page - settings.page_num_adjustment][
+            ["text", "size", "between_line"]
+        ]
+    )
+    print(df[df["page_num"] == 158][["text", "size", "between_line"]])
 
     exit()
 
@@ -31,14 +41,15 @@ if __name__ == "__main__":
     # df.pickleを読み込む
     with open("tmp/df.pickle", "rb") as f:
         df = pickle.load(f)
-    
+
     # データの中身を確認する
     check_df(df)
 
     # 列幅が一定以上か否かを判定する列を追加する
     df["width_is_over"] = df["between_line"].apply(
-        lambda x: x > settings.width_threshold)
-    
+        lambda x: x > settings.width_threshold
+    )
+
     # between_lineがNaNの行はwidth_is_overをTrueにする
     # (タイトルだけのページかもしれないから)
     df.loc[df["between_line"].isnull(), "width_is_over"] = True
@@ -54,7 +65,8 @@ if __name__ == "__main__":
 
     # width_is_overがTrueの行のみCSVに出力する
     df[["text", "page_num", "size", "between_line", "width_is_over"]].to_csv(
-        "tmp/split_point_candidate.csv", index=True)
+        "tmp/split_point_candidate.csv", index=True
+    )
 
     # split_point.csvというファイルを作成する
     # すでに存在する場合は、作成しない
