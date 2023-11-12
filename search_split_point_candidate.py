@@ -23,7 +23,7 @@ def check_df(df: pd.DataFrame) -> None:
             ["text", "size", "between_line"]
         ]
     )
-    print(df[df["page_num"] == 158][["text", "size", "between_line"]])
+    print(df[df["page_num"] == 166][["text", "size", "between_line"]])
 
     exit()
 
@@ -74,5 +74,3 @@ if __name__ == "__main__":
         with open("tmp/split_point.csv", "w") as f:
             # 1行目に列名を書き込む
             f.write("split_point\n")
-            # 2行目に0を書き込む
-            f.write("0\n")
