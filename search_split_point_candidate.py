@@ -13,7 +13,9 @@ def check_df(df: pd.DataFrame) -> None:
         print(c, df.at[last_index, c])
 
     # page_numが96の行のtext, size, between_lineを表示する
-    print(df[df["page_num"] == 1][["text", "size", "between_line"]])
+    print(df[df["page_num"] == 207][["text", "size", "between_line"]])
+
+    exit()
 
 
 if __name__ == "__main__":
@@ -32,7 +34,6 @@ if __name__ == "__main__":
     
     # データの中身を確認する
     check_df(df)
-    exit()
 
     # 列幅が一定以上か否かを判定する列を追加する
     df["width_is_over"] = df["between_line"].apply(

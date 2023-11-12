@@ -34,7 +34,7 @@ def generate_text_instruct(prompt):
 
 if __name__ == "__main__":
     # prompt/prompt_1.txtの内容を読み込みます。
-    with open("prompt/prompt_0002.txt") as f:
+    with open("prompt/prompt_0006.txt") as f:
         prompt = f.read()
 
     response = generate_text(prompt)

@@ -2,9 +2,9 @@
 # 本とページ番号を合わせるために引く数
 page_num_adjustment: int = 9
 # 処理を行う最初のページ
-first_page: int = 10
+first_page: int = 257
 # 処理を行う最後のページ
-last_page: int = 215
+last_page: int = 260
 # pdfのパス
 pdf_path: str = "book.pdf"
 
@@ -44,4 +44,4 @@ top_p: float = 1
 # max_tokensの設定
 max_tokens: int = 1006
 # 実行時のsleep時間(短いとRate Limitのエラーが発生する)
-sleep_time: int = 20
+# sleep_time: int = 20
