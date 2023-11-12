@@ -32,8 +32,11 @@ if __name__ == '__main__':
             # loop_split_rangeを更新する
             loop_split_range = row['split_range']
 
+            # titleを変数に格納する
+            title = row['title']
+
             # docxにsplit_rangeを追加する
-            doc.add_heading(loop_split_range, level=1)
+            doc.add_heading(loop_split_range+" "+title, level=1)
         
         # docxにsummaryを追加する
         doc.add_paragraph(summary)
