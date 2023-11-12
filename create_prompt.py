@@ -23,8 +23,7 @@ def split_df(df: pd.DataFrame, split_point: int, end_split_point: int) -> pd.Dat
     df_splited = df_splited.copy(deep=True)
 
     # df_splitedにsplit_pointとend_split_pointを追加する
-    df_splited["split_range"] = "{}-{}".format(
-        split_point, end_split_point)
+    df_splited["split_range"] = "{}-{}".format(split_point, end_split_point)
     return df_splited
 
 
@@ -45,8 +44,9 @@ def get_period_index(text: str) -> int:
 # dfのtext列をページごとに分割する関数
 def split_text_by_page(df: pd.DataFrame) -> pd.DataFrame:
     # df_splitの先頭の行のtext列に改行を追加する
-    df.iloc[0, df.columns.get_loc(
-        "text")] = df.iloc[0, df.columns.get_loc("text")] + "\n"
+    df.iloc[0, df.columns.get_loc("text")] = (
+        df.iloc[0, df.columns.get_loc("text")] + "\n"
+    )
 
     # dfのtext列をpage_numの値ごとに結合する
     text_by_page = df.groupby("page_num")["text"].sum()
@@ -58,32 +58,38 @@ def split_text_by_page(df: pd.DataFrame) -> pd.DataFrame:
     text_by_page["split_range"] = df.iat[0, df.columns.get_loc("split_range")]
 
     # text_by_pageのtext列に最初に現れる句点の位置を取得する
-    text_by_page["period_index"] = text_by_page["text"].apply(
-        get_period_index)
+    text_by_page["period_index"] = text_by_page["text"].apply(get_period_index)
 
     # text_by_pageのtext列のperiod_indexまでの文字列を取得する
     text_by_page["before_period_index"] = text_by_page.apply(
-        lambda row: row["text"][:row["period_index"]+1], axis=1)
+        lambda row: row["text"][: row["period_index"] + 1], axis=1
+    )
 
     # text_by_pageのtext列のperiod_indexまでの文字列を削除する
     text_by_page["text"] = text_by_page.apply(
-        lambda row: row["text"][row["period_index"]+1:], axis=1)
+        lambda row: row["text"][row["period_index"] + 1 :], axis=1
+    )
 
     # text_by_pageのbefore_period_index列をshiftして、1つずらした列を追加する
-    text_by_page["next_before_period_index"] = text_by_page["before_period_index"].shift(
-        -1)
+    text_by_page["next_before_period_index"] = text_by_page[
+        "before_period_index"
+    ].shift(-1)
 
     # text_by_page["next_before_period_index"]のNaNを空文字に置換する
-    text_by_page["next_before_period_index"] = text_by_page["next_before_period_index"].fillna(
-        "")
+    text_by_page["next_before_period_index"] = text_by_page[
+        "next_before_period_index"
+    ].fillna("")
 
     # text_by_pageのtext列の末尾にnext_before_period_index列を追加する
-    text_by_page["text"] = text_by_page["text"] + \
-        text_by_page["next_before_period_index"]
+    text_by_page["text"] = (
+        text_by_page["text"] + text_by_page["next_before_period_index"]
+    )
 
     # 先頭の行のtext列にbefore_period_index列を追加する
-    text_by_page.iloc[0, text_by_page.columns.get_loc("text")] = text_by_page.iloc[0, text_by_page.columns.get_loc(
-        "before_period_index")] + text_by_page.iloc[0, text_by_page.columns.get_loc("text")]
+    text_by_page.iloc[0, text_by_page.columns.get_loc("text")] = (
+        text_by_page.iloc[0, text_by_page.columns.get_loc("before_period_index")]
+        + text_by_page.iloc[0, text_by_page.columns.get_loc("text")]
+    )
 
     return text_by_page
 
@@ -94,7 +100,7 @@ def combine_text_by_page(text_by_page: list[pd.DataFrame]) -> list[str]:
 
     for df in text_by_page:
         # dfのpage_num列に"p."を追加する
-        df["page_num"] = "\np." + df["page_num"].astype(str)+"\n"
+        df["page_num"] = "\np." + df["page_num"].astype(str) + "\n"
 
         # dfのtext列の先頭にpage_num列を追加する
         df["text"] = df["page_num"] + df["text"]
@@ -126,23 +132,20 @@ if __name__ == "__main__":
     split_point["end_split_point"] = split_point["split_point"].shift(-1)
 
     # split_pointの最後の行のend_split_pointをdf_bookの行数に置換する
-    split_point.iloc[-1, split_point.columns.get_loc(
-        "end_split_point")] = len(df_book)
+    split_point.iloc[-1, split_point.columns.get_loc("end_split_point")] = len(df_book)
 
     # end_split_pointをint型に変換する
     split_point["end_split_point"] = split_point["end_split_point"].astype(int)
 
     # end_split_pointとsplit_pointの差を取得する
-    split_point["diff"] = split_point["end_split_point"] - \
-        split_point["split_point"]
+    split_point["diff"] = split_point["end_split_point"] - split_point["split_point"]
 
     print(split_point)
 
     # df_bookを分割する
     dfs = []
     for _, row in split_point.iterrows():
-        dfs.append(split_df(
-            df_book, row["split_point"], row["end_split_point"]))
+        dfs.append(split_df(df_book, row["split_point"], row["end_split_point"]))
 
     # ページごとに分割する
     text_by_page = list(map(split_text_by_page, dfs))
@@ -169,5 +172,4 @@ if __name__ == "__main__":
     df_prompts = pd.DataFrame(prompts)
 
     # df_promptsのfile_name列とsplit_range列をCSVに保存する
-    df_prompts[["file_name", "split_range"]].to_csv(
-        "tmp/index.csv", index=False)
+    df_prompts[["file_name", "split_range"]].to_csv("tmp/index.csv", index=False)

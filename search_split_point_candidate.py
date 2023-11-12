@@ -13,7 +13,7 @@ def check_df(df: pd.DataFrame) -> None:
         print(c, df.at[last_index, c])
 
     # page_numが96の行のtext, size, between_lineを表示する
-    print(df[df["page_num"] == 207][["text", "size", "between_line"]])
+    print(df[df["page_num"] == 1][["text", "size", "between_line"]])
 
     exit()
 
