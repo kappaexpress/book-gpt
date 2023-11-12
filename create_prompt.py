@@ -16,7 +16,9 @@ def read_df_book() -> pd.DataFrame:
 
 
 # dfをsplit_pointとend_split_pointで分割する関数
-def split_df(df: pd.DataFrame, split_point: int, end_split_point: int) -> pd.DataFrame:
+def split_df(
+    df: pd.DataFrame, split_point: int, end_split_point: int, text: str
+) -> pd.DataFrame:
     # dfをsplit_pointとend_split_pointで分割する
     df_splited = df.iloc[split_point:end_split_point]
 
@@ -24,6 +26,9 @@ def split_df(df: pd.DataFrame, split_point: int, end_split_point: int) -> pd.Dat
 
     # df_splitedにsplit_pointとend_split_pointを追加する
     df_splited["split_range"] = "{}-{}".format(split_point, end_split_point)
+
+    # df_splitedにtitleを追加する
+    df_splited["title"] = text
     return df_splited
 
 
@@ -56,6 +61,9 @@ def split_text_by_page(df: pd.DataFrame) -> pd.DataFrame:
 
     # text_by_pageにsplit_range列を追加する
     text_by_page["split_range"] = df.iat[0, df.columns.get_loc("split_range")]
+
+    # text_by_pageにtitle列を追加する
+    text_by_page["title"] = df.iat[0, df.columns.get_loc("title")]
 
     # text_by_pageのtext列に最初に現れる句点の位置を取得する
     text_by_page["period_index"] = text_by_page["text"].apply(get_period_index)
@@ -114,9 +122,12 @@ def combine_text_by_page(text_by_page: list[pd.DataFrame]) -> list[str]:
         # split_rangeを変数に格納する
         split_range = df.iat[0, df.columns.get_loc("split_range")]
 
+        # titleを変数に格納する
+        title = df.iat[0, df.columns.get_loc("title")]
+
         # promptをリストに追加する
         for p in prompt.to_list():
-            output.append({"split_range": split_range, "prompt": p})
+            output.append({"split_range": split_range, "prompt": p, "title": title})
 
     return output
 
@@ -140,12 +151,16 @@ if __name__ == "__main__":
     # end_split_pointとsplit_pointの差を取得する
     split_point["diff"] = split_point["end_split_point"] - split_point["split_point"]
 
+    # pandasの設定で日本語がずれるのを防ぐ
+    pd.set_option("display.unicode.east_asian_width", True)
     print(split_point)
 
     # df_bookを分割する
     dfs = []
     for _, row in split_point.iterrows():
-        dfs.append(split_df(df_book, row["split_point"], row["end_split_point"]))
+        dfs.append(
+            split_df(df_book, row["split_point"], row["end_split_point"], row["text"])
+        )
 
     # ページごとに分割する
     text_by_page = list(map(split_text_by_page, dfs))
@@ -172,4 +187,4 @@ if __name__ == "__main__":
     df_prompts = pd.DataFrame(prompts)
 
     # df_promptsのfile_name列とsplit_range列をCSVに保存する
-    df_prompts[["file_name", "split_range"]].to_csv("tmp/index.csv", index=False)
+    df_prompts[["file_name", "split_range", "title"]].to_csv("tmp/index.csv", index=False)
