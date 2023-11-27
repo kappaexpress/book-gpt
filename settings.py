@@ -2,9 +2,9 @@
 # 本とページ番号を合わせるために引く数
 page_num_adjustment: int = 5
 # 処理を行う最初のページ
-first_page: int = 6
+first_page: int = 8
 # 処理を行う最後のページ
-last_page: int = 252
+last_page: int = 336
 # pdfのパス
 pdf_path: str = "book.pdf"
 
@@ -12,11 +12,11 @@ pdf_path: str = "book.pdf"
 # 列幅の閾値
 width_threshold: int = 10
 # フォントサイズの閾値
-font_size_threshold: int = 9.58
+font_size_threshold: int = 11
 
 # create_prompt.pyの設定
 # 1つのpromptに含めるページ数
-page_in_prompt: int = 2
+page_in_prompt: int = 7
 # GPTに入力する命令
 order: str = '''
 #制約条件
@@ -36,7 +36,7 @@ order: str = '''
 # GPTに与える文脈
 context: str = '''あなたはプロの編集者です。以下の制約条件に従って、入力する文章を箇条書きで要約してください。'''
 # モデルの設定
-model: str = "gpt-3.5-turbo"
+model: str = "gpt-4-1106-preview"
 # temperatureの設定
 temperature: float = 0.01
 # top_pの設定
@@ -44,4 +44,4 @@ top_p: float = 1
 # max_tokensの設定
 max_tokens: int = 1006
 # 実行時のsleep時間(短いとRate Limitのエラーが発生する)
-sleep_time: int = 20
+sleep_time: int = 0
