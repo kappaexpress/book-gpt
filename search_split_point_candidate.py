@@ -6,9 +6,9 @@ import settings
 
 # データの中身を確認する関数
 def check_df(df: pd.DataFrame) -> None:
-    check_df_page(df, settings.first_page - settings.page_num_adjustment)
-    check_df_page(df, settings.last_page - settings.page_num_adjustment)
-    check_df_page(df, 218)
+    # check_df_page(df, settings.first_page - settings.page_num_adjustment)
+    # check_df_page(df, settings.last_page - settings.page_num_adjustment)
+    check_df_page(df, 9)
 
     exit()
 
