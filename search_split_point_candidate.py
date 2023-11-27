@@ -6,26 +6,19 @@ import settings
 
 # データの中身を確認する関数
 def check_df(df: pd.DataFrame) -> None:
-    # Dataframeの末尾のインデックスを取得する
-    last_index = df.index[-1]
-    for c in df.columns:
-        print(c, df.at[0, c])
-        print(c, df.at[last_index, c])
-
-    # page_numのtext, size, between_lineを表示する
-    print(
-        df[df["page_num"] == (settings.first_page - settings.page_num_adjustment)][
-            ["text", "size", "between_line"]
-        ]
-    )
-    print(
-        df[df["page_num"] == settings.last_page - settings.page_num_adjustment][
-            ["text", "size", "between_line"]
-        ]
-    )
-    print(df[df["page_num"] == 166][["text", "size", "between_line"]])
+    check_df_page(df, settings.first_page - settings.page_num_adjustment)
+    check_df_page(df, settings.last_page - settings.page_num_adjustment)
+    check_df_page(df, 218)
 
     exit()
+
+
+# 特定のページのデータの中身を確認する関数
+def check_df_page(df: pd.DataFrame, page_num: int) -> None:
+    print(f"page_num: {page_num}")
+    # page_numのtext, size, between_lineを表示する
+    print(df[df["page_num"] == page_num][["text", "size", "between_line"]])
+    print("\n")
 
 
 if __name__ == "__main__":
