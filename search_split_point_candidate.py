@@ -50,7 +50,7 @@ if __name__ == "__main__":
     # width_is_overがTrueの行のみを抽出する
     df = df[df["width_is_over"] == True]
 
-    # sizeが15以上の行のみを抽出する
+    # sizeが一定以上か否かを判定する列を追加する
     df = df[df["size"] >= settings.font_size_threshold]
 
     # width_is_overがTrueの行のみ表示する
