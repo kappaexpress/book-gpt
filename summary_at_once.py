@@ -6,6 +6,7 @@ openai.api_key = key.api_key
 prompt_path = "prompt"
 summary_path = "summary"
 
+
 # 通常モデルを使用してテキストを生成する関数
 def generate_text(prompt):
     response = openai.ChatCompletion.create(
@@ -18,19 +19,7 @@ def generate_text(prompt):
         top_p=settings.top_p,
         max_tokens=settings.max_tokens,
     )
-    return response['choices'][0]['message']['content']
-
-
-# instructモデルを使用してテキストを生成する関数
-def generate_text_instruct(prompt):
-    response = openai.Completion.create(
-        model="gpt-3.5-turbo-instruct",
-        prompt=prompt,
-        temperature=settings.temperature,
-        top_p=settings.top_p,
-        max_tokens=settings.max_tokens,
-    )
-    return response['choices'][0]['text']
+    return response["choices"][0]["message"]["content"]
 
 
 # ファイル名に基づいて書き込みを行う関数
