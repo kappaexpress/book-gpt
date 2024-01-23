@@ -11,6 +11,7 @@ pandas = "^2.2.0"
 pymupdf = "^1.23.18"
 openai = "^1.9.0"
 python-docx = "^1.1.0"
+matplotlib = "^3.8.2"
 
 
 [build-system]
