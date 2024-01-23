@@ -27,7 +27,7 @@ def calc_line_size_for_horizontal_text(df: pd.DataFrame) -> float:
 
 
 # pageをdataframeに変換する関数
-def page_to_dataframe(page: fitz.fitz.Page) -> pd.DataFrame:
+def page_to_dataframe(page: fitz.Page) -> pd.DataFrame:
     out: dict = {}
     texts: dict = page.get_textpage().extractDICT()
     page_num: int = page.number
@@ -52,7 +52,7 @@ def page_to_dataframe(page: fitz.fitz.Page) -> pd.DataFrame:
 
 
 # すべてのページを読み込む関数
-def read_all_pages(doc: fitz.fitz.Document) -> pd.DataFrame:
+def read_all_pages(doc: fitz.Document) -> pd.DataFrame:
     out: list = []
 
     for page in doc:
@@ -75,7 +75,7 @@ def read_all_pages(doc: fitz.fitz.Document) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    doc: fitz.fitz.Document = fitz.open("book_2.pdf", filetype="pdf")
+    doc: fitz.Document = fitz.open("book_2.pdf", filetype="pdf")
 
     # dfの日本語を表示する際にずれないようにする
     pd.set_option("display.unicode.east_asian_width", True)
