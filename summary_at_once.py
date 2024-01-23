@@ -32,7 +32,7 @@ def write_file(file_name: str, summary: str):
 
 
 if __name__ == "__main__":
-    path = "prompt/prompt_0175.txt"
+    path = "prompt/prompt_0003.txt"
     with open(path) as f:
         prompt = f.read()
 
