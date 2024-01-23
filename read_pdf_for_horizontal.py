@@ -44,6 +44,10 @@ def page_to_dataframe(page: fitz.Page) -> pd.DataFrame:
                 "line_num": line_num,
                 "text": one_line_text,
                 "size": one_line_size,
+                "bbox_0": line["bbox"][0],
+                "bbox_1": line["bbox"][1],
+                "bbox_2": line["bbox"][2],
+                "bbox_3": line["bbox"][3],
             }
             line_num += 1
 
