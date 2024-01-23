@@ -1,7 +1,6 @@
-import os
 import pandas as pd
-import pickle
 import fitz
+import pickle
 
 
 # bboxの列をパースする関数
@@ -53,39 +52,18 @@ def page_to_dataframe(page: fitz.Page) -> pd.DataFrame:
 
 # すべてのページを読み込む関数
 def read_all_pages(doc: fitz.Document) -> pd.DataFrame:
-    out: list = []
+    # すべてのページをdataframeに変換
+    out: list = [page_to_dataframe(page) for page in doc]
 
-    for page in doc:
-        df: pd.DataFrame = page_to_dataframe(page)
-
-        # ページ番号を追加
-        page_id: int = page.number
-        df["page_id"] = page_id
-
-        if page_id == 30:
-            exit()
-
-        # bboxの列をパース
-        df = parse_bbox(df)
-        out.append(df)
-
-    # すべてのページを結合&indexを振り直す
-    df = pd.concat(out).reset_index(drop=True)
-    return df
+    # すべてのページを結合
+    return pd.concat(out)
 
 
 if __name__ == "__main__":
     doc: fitz.Document = fitz.open("book_2.pdf", filetype="pdf")
 
-    # dfの日本語を表示する際にずれないようにする
-    pd.set_option("display.unicode.east_asian_width", True)
+    df: pd.DataFrame = read_all_pages(doc)
 
-    # dfの1行の文字数を増やす
-    pd.set_option("display.max_colwidth", 1000)
-
-    for i in range(100):
-        df = page_to_dataframe(doc[i])
-        try:
-            print(df["text"])
-        except KeyError:
-            continue
+    # pickleで保存
+    with open("tmp/df.pickle", "wb") as f:
+        pickle.dump(df, f)
