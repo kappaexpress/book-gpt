@@ -1,59 +1,47 @@
-import openai
+import pickle
+import matplotlib.pyplot as plt
 import pandas as pd
-from datetime import datetime
-import key
-
-openai.api_key = key.api_key
-
-# OpenAIが提供するモデル一覧取得
-model_list = openai.Model.list().data
-model_num  = len(model_list)
-
-# リスト
-created_at_list           = []
-model_id_list             = []
-allow_create_engine_list  = []
-allow_fine_tuning_list    = []
-allow_logprobs_list       = []
-allow_sampling_list       = []
-allow_search_indices_list = []
-allow_view_list           = []
+from scipy.stats import trim_mean
 
 
-for i in range(model_num):
-    # データ取得 
-    created_at           = datetime.fromtimestamp(model_list[i].created)
-    model_id             = model_list[i].id
-    allow_create_engine  = model_list[i].permission[0].allow_create_engine
-    allow_fine_tuning    = model_list[i].permission[0].allow_fine_tuning
-    allow_logprobs       = model_list[i].permission[0].allow_logprobs
-    allow_sampling       = model_list[i].permission[0].allow_sampling
-    allow_search_indices = model_list[i].permission[0].allow_search_indices
-    allow_view           = model_list[i].permission[0].allow_view 
+if __name__ == "__main__":
+    # 1行に表示する文字数を設定
+    pd.set_option("display.max_colwidth", 40)
+
+    # 表示する行数を設定
+    pd.set_option("display.max_rows", 100)
+
+    # 日本語の表示がそろうようにする
+    pd.set_option("display.unicode.east_asian_width", True)
+
+    # 保存したファイルを読み込む
+    with open("tmp/df.pickle", "rb") as f:
+        df = pickle.load(f)
     
-    # 格納
-    created_at_list.append(created_at)
-    model_id_list.append(model_id)
-    allow_create_engine_list.append(allow_create_engine)
-    allow_fine_tuning_list.append(allow_fine_tuning)
-    allow_logprobs_list.append(allow_logprobs)
-    allow_sampling_list.append(allow_sampling)
-    allow_search_indices_list.append(allow_search_indices)
-    allow_view_list.append(allow_view)
     
-# データフレーム
-df = pd.DataFrame({
-        "作成日":                  created_at_list,
-        "モデルID":                model_id_list,
-        "エンジンの作成許可":        allow_create_engine_list,
-        "ファインチューニングの許可": allow_fine_tuning_list,
-        "ログ確率の許可":           allow_logprobs_list,
-        "サンプリングの許可":        allow_sampling_list,
-        "検索インデックスの許可":     allow_search_indices_list,
-        "ビューの許可":             allow_view_list,
-                })
+    # charが" "の行を削除
+    df = df[df["char"] != " "]
 
-# 並び替え
-df = df.sort_values("作成日", ascending=False).reset_index(drop=True)
+    # widthとheightを追加
+    df["width"] = df["x1"] - df["x0"]
+    df["height"] = df["y1"] - df["y0"]
 
-print(df[["作成日", "モデルID"]])
+    # 縦書きならwidth,横書きならheightを使う
+    direction: dict = {"vertical": "width", "horizontal": "height"}
+
+    use_pram = direction["horizontal"]
+
+    df_text = df.groupby(["page_no", "block_no"])["char"].apply(lambda x: "".join(x))
+
+    df_size = df.groupby(["page_no", "block_no"])[use_pram].apply(
+        lambda x: trim_mean(x, 0.3)
+    )
+
+    # df_textとdf_heightを結合する
+    df = pd.concat([df_text, df_size], axis=1)
+
+    # csvで保存
+    df.to_csv("tmp/df.csv")
+
+    # heightが13~16の行を表示
+    print(df[(df[use_pram] > 10.5) & (df[use_pram] < 14)])
