@@ -1,18 +1,19 @@
 # read_pdf.pyの設定
-# 本とページ番号を合わせるために引く数
-page_num_adjustment: int = 7
-# 処理を行う最初のページ
-first_page: int = 9
-# 処理を行う最後のページ
-last_page: int = 524
+# 書籍内で1ページ目が記載されているページの番号（pdfviewerで確認した値から1を引いた値を入れる）
+first_page_in_book: int = 12
+# 処理を行う最初のページ（pdfviewerで確認した値から1を引いた値を入れる）
+first_page: int = 14
+# 処理を行う最後のページ（pdfviewerで確認した値から1を引いた値を入れる）
+last_page: int = 306
 # pdfのパス
 pdf_path: str = "book.pdf"
 
 # search_split_point_candidate.pyの設定
-# 列幅の閾値
-width_threshold: int = 10
-# フォントサイズの閾値
-font_size_threshold: int = 11
+# 検索する文字サイズの最小値
+min_font_size: int = 14
+# 検索する文字サイズの最大値
+max_font_size: int = 18
+
 
 # create_prompt.pyの設定
 # 1つのpromptに含めるページ数
