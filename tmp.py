@@ -22,18 +22,11 @@ if __name__ == "__main__":
     # charが" "の行を削除
     df = df[df["char"] != " "]
 
-    # widthとheightを追加
-    df["width"] = df["x1"] - df["x0"]
     df["height"] = df["y1"] - df["y0"]
-
-    # 縦書きならwidth,横書きならheightを使う
-    direction: dict = {"vertical": "width", "horizontal": "height"}
-
-    use_pram = direction["horizontal"]
 
     df_text = df.groupby(["page_no", "block_no"])["char"].apply(lambda x: "".join(x))
 
-    df_size = df.groupby(["page_no", "block_no"])[use_pram].apply(
+    df_size = df.groupby(["page_no", "block_no"])["height"].apply(
         lambda x: trim_mean(x, 0.3)
     )
 
@@ -44,4 +37,4 @@ if __name__ == "__main__":
     df.to_csv("tmp/df.csv")
 
     # heightが13~16の行を表示
-    print(df[(df[use_pram] > 10.5) & (df[use_pram] < 14)])
+    print(df[(df["height"] > 14) & (df["height"] < 18)])
