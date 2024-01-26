@@ -42,4 +42,4 @@ top_p: float = 1
 # max_tokensの設定
 max_tokens: int = 1006
 # 実行時のsleep時間(短いとRate Limitのエラーが発生する)
-sleep_time: int = 0
+sleep_time: int = 30
