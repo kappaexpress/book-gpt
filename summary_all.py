@@ -1,19 +1,17 @@
 from time import sleep
-import openai
 import settings
 import key
 import os
 import concurrent.futures
+from openai import OpenAI
 
-openai.api_key = key.api_key
-prompt_path = "prompt"
-summary_path = "summary"
+client = OpenAI(api_key=key.api_key2)
 
 
 # prompt/以下のファイル名をすべて取得する関数
 def get_prompt_file_names():
     prompt_file_names = []
-    for file_name in os.listdir(prompt_path):
+    for file_name in os.listdir("prompt"):
         prompt_file_names.append(file_name)
 
     # ファイル名を昇順に並び替える
@@ -38,17 +36,16 @@ def one_thread(file_name: str):
 
 # ファイル名に基づいて読み込みを行う関数
 def read_file(file_name: str) -> str:
-    with open(prompt_path + "/" + file_name, "r") as f:
+    with open("prompt/" + file_name, "r") as f:
         prompt = f.read()
     return prompt
 
 
 # # GPTを使用してテキストを生成する関数
 def generate_summary(prompt: str) -> str:
-    response = openai.ChatCompletion.create(
+    completion = client.chat.completions.create(
         model=settings.model,
         messages=[
-            {"role": "system", "content": settings.context},
             {"role": "user", "content": prompt},
         ],
         temperature=settings.temperature,
@@ -56,33 +53,18 @@ def generate_summary(prompt: str) -> str:
         max_tokens=settings.max_tokens,
     )
 
-    return response['choices'][0]['message']['content']
-
-
-# instructモデルを使用してテキストを生成する関数
-def generate_text_instruct(prompt):
-    response = openai.Completion.create(
-        model="gpt-3.5-turbo-instruct",
-        prompt=prompt,
-        temperature=settings.temperature,
-        top_p=settings.top_p,
-        max_tokens=settings.max_tokens,
-    )
-    return response['choices'][0]['text']
+    return completion.choices[0].message.content
 
 
 # ファイル名に基づいて書き込みを行う関数
 def write_file(file_name: str, summary: str):
-    # ファイル名を作成　prompt_0000.txt -> summary_0000.txt
-    file_name = file_name.replace(prompt_path, summary_path)
-
-    with open(summary_path + "/" + file_name, "w") as f:
+    with open("summary/" + file_name, "w") as f:
         f.write(summary)
 
 
 if __name__ == "__main__":
     # summaryディレクトリを作成する
-    os.makedirs(summary_path, exist_ok=True)
+    os.makedirs("summary", exist_ok=True)
 
     flies = get_prompt_file_names()
 
