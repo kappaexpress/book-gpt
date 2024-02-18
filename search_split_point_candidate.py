@@ -1,5 +1,4 @@
 import pickle
-import os
 import pandas as pd
 import settings
 from scipy.stats import trim_mean
@@ -7,18 +6,45 @@ from scipy.stats import trim_mean
 
 # データの中身を確認する関数
 def check_df(df: pd.DataFrame) -> None:
-    
-    check_df_page(df, 303)
+
+    # 8
+    check_df_page(df, 8)
+    # 23
+    check_df_page(df, 23)
+    # 57
+    check_df_page(df, 57)
+    # 89
+    check_df_page(df, 89)
+    # 129
+    check_df_page(df, 129)
+    # 163
+    check_df_page(df, 163)
+    # 185
+    check_df_page(df, 185)
+    # 213
+    check_df_page(df, 213)
+    # 254
+    check_df_page(df, 253)
+    # 269
+    check_df_page(df, 269)
 
     exit()
 
 
 # 特定のページのデータの中身を確認する関数
 def check_df_page(df: pd.DataFrame, page_num: int) -> None:
-    print(f"page_num: {page_num}")
-    # page_numのデータを表示
-    print(df[df["page_no"] == page_num])
+
+    # page_numのデータのchar, block_no, page_noを表示
+    print(df[df["page_no"] == page_num][["char", "block_no", "page_no"]].head(12))
+
     print("\n")
+
+    # page_numのデータのblock_no==0のcharを結合して表示
+    print(
+        df[(df["page_no"] == page_num) & (df["block_no"] == 0)][["char"]].apply(
+            lambda x: "".join(x)
+        )
+    )
 
 
 if __name__ == "__main__":
