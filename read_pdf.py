@@ -62,7 +62,7 @@ def read_all_pages(doc: fitz.Document) -> pd.DataFrame:
 
 # メイン関数
 def main():
-    doc: fitz.Document = fitz.open("book_2.pdf", filetype="pdf")
+    doc: fitz.Document = fitz.open("book.pdf", filetype="pdf")
 
     df: pd.DataFrame = read_all_pages(doc)
 
