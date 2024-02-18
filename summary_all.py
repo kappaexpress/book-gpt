@@ -5,7 +5,7 @@ import os
 import concurrent.futures
 from openai import OpenAI
 
-client = OpenAI(api_key=key.api_key2)
+client = OpenAI(api_key=key.api_key)
 
 
 # prompt/以下のファイル名をすべて取得する関数
