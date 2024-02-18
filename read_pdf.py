@@ -3,6 +3,7 @@ import fitz
 import pickle
 import multiprocessing
 import os
+import settings
 
 
 # textのdictをdataframeに変換する関数
@@ -66,7 +67,7 @@ def main():
     # tmpディレクトリがなければ作成
     os.makedirs("tmp", exist_ok=True)
 
-    doc: fitz.Document = fitz.open("book.pdf", filetype="pdf")
+    doc: fitz.Document = fitz.open(settings.pdf_path, filetype="pdf")
 
     df: pd.DataFrame = read_all_pages(doc)
 
