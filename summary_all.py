@@ -68,5 +68,5 @@ if __name__ == "__main__":
 
     flies = get_prompt_file_names()
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+    with concurrent.futures.ThreadPoolExecutor() as executor:
         results = executor.map(one_thread, flies)
