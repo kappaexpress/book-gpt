@@ -89,7 +89,7 @@ if __name__ == "__main__":
         text = "\n".join(df_text)
 
         # promptと結合する
-        text = text + settings.order
+        text = settings.order + text
 
         print(text)
 
@@ -99,7 +99,7 @@ if __name__ == "__main__":
         file_name = f"prompt/{file_count:04}.txt"
         with open(file_name, "w") as f:
             f.write(text)
-        
+
         file_index.append([file_name, title])
 
         file_count += 1
