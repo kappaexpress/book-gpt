@@ -89,7 +89,7 @@ if __name__ == "__main__":
         text = "\n".join(df_text)
 
         # promptと結合する
-        text = settings.order + text
+        text = text + settings.order
 
         print(text)
 
