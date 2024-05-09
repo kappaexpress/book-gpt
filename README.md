@@ -22,7 +22,7 @@ python read_pdf.py
 python search_split_point_candidate.py
 ```
 10. `tmp/split_point_candidate.csv`が生成されるので、確認し、過不足があれば修正する
-11. 10を`tmp/split_point.csv`にコピーする
+11. 10を新規作成した`tmp/split_point.csv`にコピーする
 12. `create_prompt.py`を実行する
 ```bash
 python create_prompt.py
@@ -41,37 +41,30 @@ python join_summary.py
 
 
 ## ディレクトリとファイル
+### prompt
+- 要約処理のための入力テキストが格納されているテキストファイルがあるディレクトリ
+### summary
+- prompt ディレクトリの対応するファイルから生成された要約テキストファイルが格納されているディレクトリ
+### tmp
+- 中間処理ステップで使用されるデータファイルが一時的に保存されています:
 
-### `__pycache__`
-- Pythonスクリプトの読み込み時間を改善するためのコンパイル済みPythonファイルが含まれています。
+`df.pickle`: pdfのpandasデータフレームを一時保存するためのファイル  
+`index.csv`, `split_point.csv`, `split_point_candidate.csv`: 要約処理のための分割ポイント情報
+summary.docx: すべての要約を含む最終的なドキュメント
 
-### `prompt`
-- 処理またはテスト用の入力テキストが格納されているテキストファイル (`0000.txt` から `0017.txt`)。
-
-### `summary`
-- `prompt` ディレクトリの対応するファイルから生成された要約テキストファイル。
-
-### `tmp`
-- 中間処理ステップで使用される可能性のある `df.pickle`（シリアライズされたデータフレーム）、`index.csv`、`split_point.csv`、`split_point_candidate.csv` などのデータファイルが一時的に保存されています。
-- `summary.docx` はすべての要約を含むドキュメントである可能性があります。
-
-## Python スクリプト
-
-- `check.py`: ファイルやデータの整合性または形式をチェックする可能性があります。
-- `create_prompt.py`: `prompt` ディレクトリに保存されている入力テキストを生成する可能性があります。
-- `join_summary.py`: 複数の要約ファイルを単一のドキュメントや出力形式に組み合わせる可能性があります。
-- `read_pdf.py`: PDFファイル (`book.pdf`) から内容を読み取り、抽出するスクリプト。
-- `search_split_point_candidate.py`: 要約プロセスで使用されるテキストを分割する可能性のあるポイントを見つけるスクリプト。
-- `settings.py`: プロジェクトの設定を含む。
-- `summary_all.py`: すべての入力テキストを一度に要約する可能性のあるスクリプト。
-- `summary_at_once.py`: 要約プロセスに関連する別のスクリプトで、`summary_all.py`の別のアプローチかもしれません。
+### Python スクリプト
+- check.py: 特定のページの中身を確認するスクリプト。
+- create_prompt.py: prompt ディレクトリに保存されている入力テキストを生成するスクリプト。
+- join_summary.py: 複数の要約ファイルを単一のドキュメントにまとめるスクリプト。
+- read_pdf.py: PDFファイル (`book.pdf`) からテキストを抽出するスクリプト。
+- search_split_point_candidate.py: 要約プロセスで使用されるテキストの分割ポイントを見つけるスクリプト。
+- settings.py: プロジェクトの設定を定義するファイル。
+- summary_all.py: すべての入力テキストを一度に要約するスクリプト。
+- summary_at_once.py: 指定したプロンプトのみを要約するスクリプト。
 
 ### 設定ファイル
-
-- `pyproject.toml`: Pythonパッケージ管理のためのツールを設定する。
-- `poetry.lock`: インストールの一貫性を保証するためのロックファイル。
+- pyproject.toml: Pythonパッケージ管理のためのツールの設定ファイル。
 
 ### その他のファイル
-
-- `README.md`: このプロジェクトの概要を説明するマークダウンファイル。
-- `book.pdf`: テキストが抽出され処理されるソースPDFドキュメント。
+- README.md: このプロジェクトの概要を説明するマークダウンファイル。
+- book.pdf: テキストが抽出され処理されるソースPDFドキュメント。
