@@ -1,11 +1,14 @@
 from time import sleep
 import settings
-import key
 import os
 import concurrent.futures
-from openai import OpenAI
+import boto3
+import json
 
-client = OpenAI(api_key=key.api_key)
+
+bedrock_runtime = boto3.client(service_name='bedrock-runtime', region_name='us-west-2')
+model_id = "anthropic.claude-3-opus-20240229-v1:0"
+
 
 
 # prompt/以下のファイル名をすべて取得する関数
@@ -30,8 +33,7 @@ def one_thread(file_name: str):
         sleep(settings.sleep_time)
         write_file(file_name, summary)
     except Exception as e:
-        print(file_name+": "+str(e))
-
+        print(file_name + ": " + str(e))
 
 
 # ファイル名に基づいて読み込みを行う関数
@@ -43,17 +45,21 @@ def read_file(file_name: str) -> str:
 
 # # GPTを使用してテキストを生成する関数
 def generate_summary(prompt: str) -> str:
-    completion = client.chat.completions.create(
-        model=settings.model,
-        messages=[
-            {"role": "user", "content": prompt},
-        ],
-        temperature=settings.temperature,
-        top_p=settings.top_p,
-        max_tokens=settings.max_tokens,
+    body=json.dumps(
+        {
+            "anthropic_version": "bedrock-2023-05-31",
+            "max_tokens": settings.max_tokens,
+            "messages": [{"role": "user", "content": prompt}],
+            "top_p": settings.top_p,
+            "temperature": settings.temperature
+        }  
     )
 
-    return completion.choices[0].message.content
+    response = bedrock_runtime.invoke_model(body=body, modelId=model_id)
+    response_body = json.loads(response.get('body').read())
+    response_text = response_body["content"][0]["text"]
+
+    return response_text
 
 
 # ファイル名に基づいて書き込みを行う関数
@@ -68,5 +74,10 @@ if __name__ == "__main__":
 
     flies = get_prompt_file_names()
 
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    # must delete the following line
+    flies = [flies[0]]
+
+    with concurrent.futures.ThreadPoolExecutor(
+        max_workers=settings.worker_count
+    ) as executor:
         results = executor.map(one_thread, flies)
