@@ -30,23 +30,29 @@ order: str = '''あなたはプロの編集者です。以下の制約条件に�
 ・全てのページについて、1ページにつき1つ以上は要素を書き出す。
 ・要約の要素数は多すぎるくらいにする。
 ・要約の数は30個以上出力する。
+
 # 要約例
  - マスコミはこれらの本をまともなものとして扱っていた (p.25)
  - 1987年12月27日、テレビ東京は「国際ユダヤ資本家」のドキュメンタリーを全国放映 (p.25-26)
+
 # 入力
+{text}
+
+# 出力
+以下に要約を箇条書きで作成しました。
 '''
 
 # summary.pyの設定
 # temperatureの設定
-temperature: float = 0.01
+temperature: float = 0.1
 # top_pの設定
-top_p: float = 1
+top_p: float = 0.99
 # max_tokensの設定
 max_tokens: int = 3500
 # 実行時のsleep時間 -⑦
-sleep_time: int = 30
+sleep_time: int = 1
 # 実行時に同時に処理する数 -⑧
-worker_count: int = 2
+worker_count: int = 5
 
 # summary_at_once.pyの設定 -⑨
-file_name: str = "0017.txt"
+file_name: str = "0016.txt"
