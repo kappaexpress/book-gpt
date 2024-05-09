@@ -33,7 +33,7 @@ def one_thread(file_name: str):
         sleep(settings.sleep_time)
         write_file(file_name, summary)
     except Exception as e:
-        print(file_name + ": " + str(e))
+        print(file_name + ": error\n" + str(e))
 
 
 # ファイル名に基づいて読み込みを行う関数
