@@ -42,9 +42,9 @@ if __name__ == "__main__":
 
     # page_noをfirst_pageとlast_pageでフィルタリングする
     df_out = df_out[
-        (df_out.index.get_level_values("page_no") >= settings.first_page - 1)
-        & (df_out.index.get_level_values("page_no") <= settings.last_page - 1)
+        (df_out.index.get_level_values("page_no") >= settings.first_page)
+        & (df_out.index.get_level_values("page_no") <= settings.last_page)
     ]
 
     # split_point_candidate.csvを保存する
-    df_out[["height", "char"]].to_csv("tmp/split_point_candidate.csv", index=True)
+    df_out[["char", "height"]].to_csv("tmp/split_point_candidate.csv", index=True)
