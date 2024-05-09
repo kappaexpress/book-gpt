@@ -5,3 +5,5 @@ tmp/*
 summary/*
 prompt/*
 __pycache__/*
+
+poetry.lock
