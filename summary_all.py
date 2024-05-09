@@ -74,9 +74,6 @@ if __name__ == "__main__":
 
     flies = get_prompt_file_names()
 
-    # must delete the following line
-    flies = [flies[0]]
-
     with concurrent.futures.ThreadPoolExecutor(
         max_workers=settings.worker_count
     ) as executor:
