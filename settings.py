@@ -1,22 +1,25 @@
 # read_pdf.pyの設定
-# 書籍内で1ページ目が記載されているページの番号（pdfviewerで確認した値）
-first_page_in_book: int = 9
-# 処理を行う最初のページ（pdfviewerで確認した値）
-first_page: int = 9
-# 処理を行う最後のページ（pdfviewerで確認した値）
-last_page: int = 276
+# 処理を行う最初のページ（pdfviewerで確認した値）-①
+first_page: int = 32
+
+# 処理を行う最初のページに記載されているページ数（pdfの画像内にある値）-②
+first_page_in_book: int = 26
+
+# 処理を行う最後のページ（pdfviewerで確認した値）-③
+last_page: int = 447
+
 # pdfのパス
 pdf_path: str = "book.pdf"
 
 # search_split_point_candidate.pyの設定
-# 検索する文字サイズの最小値
-min_font_size: int = 20
-# 検索する文字サイズの最大値
-max_font_size: int = 100
+# 検索する文字サイズの最小値 -④
+min_font_size: int = 10
+# 検索する文字サイズの最大値 -⑤
+max_font_size: int = 30
 
 
 # create_prompt.pyの設定
-# GPTに入力する命令
+# 入力する命令 -⑥
 order: str = '''あなたはプロの編集者です。以下の制約条件に従って、入力する文章を箇条書きで要約してください。
 #制約条件
 ・架空の表現や言葉を使用しない。
@@ -34,13 +37,13 @@ order: str = '''あなたはプロの編集者です。以下の制約条件に�
 '''
 
 # summary.pyの設定
-# モデルの設定
-model: str = "gpt-4-turbo-preview"
 # temperatureの設定
 temperature: float = 0.01
 # top_pの設定
 top_p: float = 1
 # max_tokensの設定
 max_tokens: int = 3500
-# 実行時のsleep時間(短いとRate Limitのエラーが発生する)
+# 実行時のsleep時間 -⑦
 sleep_time: int = 30
+# 実行時に同時に処理する数 -⑧
+worker_count: int = 2
