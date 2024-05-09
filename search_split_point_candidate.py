@@ -4,49 +4,6 @@ import settings
 from scipy.stats import trim_mean
 
 
-# データの中身を確認する関数
-def check_df(df: pd.DataFrame) -> None:
-
-    # 8
-    check_df_page(df, 8)
-    # 23
-    check_df_page(df, 23)
-    # 57
-    check_df_page(df, 57)
-    # 89
-    check_df_page(df, 89)
-    # 129
-    check_df_page(df, 129)
-    # 163
-    check_df_page(df, 163)
-    # 185
-    check_df_page(df, 185)
-    # 213
-    check_df_page(df, 213)
-    # 254
-    check_df_page(df, 253)
-    # 269
-    check_df_page(df, 269)
-
-    exit()
-
-
-# 特定のページのデータの中身を確認する関数
-def check_df_page(df: pd.DataFrame, page_num: int) -> None:
-
-    # page_numのデータのchar, block_no, page_noを表示
-    print(df[df["page_no"] == page_num][["char", "block_no", "page_no"]].head(12))
-
-    print("\n")
-
-    # page_numのデータのblock_no==0のcharを結合して表示
-    print(
-        df[(df["page_no"] == page_num) & (df["block_no"] == 0)][["char"]].apply(
-            lambda x: "".join(x)
-        )
-    )
-
-
 if __name__ == "__main__":
     # 1列に表示する文字数を指定する
     pd.set_option("display.max_colwidth", 30)
@@ -61,16 +18,15 @@ if __name__ == "__main__":
     with open("tmp/df.pickle", "rb") as f:
         df = pickle.load(f)
 
-    # データの中身を確認する
-    check_df(df)
-
     # charが" "の行を削除
     df = df[df["char"] != " "]
 
     df["height"] = df["y1"] - df["y0"]
 
+    # blockごとの文字を結合する
     df_text = df.groupby(["page_no", "block_no"])["char"].apply(lambda x: "".join(x))
 
+    # blockごとの文字の高さの平均値を計算する
     df_size = df.groupby(["page_no", "block_no"])["height"].apply(
         lambda x: trim_mean(x, 0.3)
     )
@@ -78,9 +34,16 @@ if __name__ == "__main__":
     # df_textとdf_heightを結合する
     df = pd.concat([df_text, df_size], axis=1)
 
+    # 文字の高さを最小値と最大値でフィルタリングする
     df_out = df[
         (df["height"] > settings.min_font_size)
         & (df["height"] < settings.max_font_size)
+    ]
+
+    # page_noをfirst_pageとlast_pageでフィルタリングする
+    df_out = df_out[
+        (df_out.index.get_level_values("page_no") >= settings.first_page - 1)
+        & (df_out.index.get_level_values("page_no") <= settings.last_page - 1)
     ]
 
     # split_point_candidate.csvを保存する
