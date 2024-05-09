@@ -44,7 +44,8 @@ def dict_to_dataframe_2(texts: dict, page_num: int) -> pd.DataFrame:
         ],
     )
 
-    df["page_no"] = page_num
+    # pdfviewerで確認した値に合わせる
+    df["page_no"] = page_num + 1
 
     return df
 
