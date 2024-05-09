@@ -21,6 +21,12 @@ def get_last_page_index(df: pd.DataFrame) -> pd.Index:
 
 
 if __name__ == "__main__":
+    # promptディレクトリを削除する
+    if os.path.exists("prompt"):
+        for file in os.listdir("prompt"):
+            os.remove(os.path.join("prompt", file))
+        os.rmdir("prompt")
+
     # promptディレクトリを作成する
     os.makedirs("prompt", exist_ok=True)
 
@@ -80,7 +86,9 @@ if __name__ == "__main__":
 
         df_text = df_sub.groupby(["page_no"])["char"].apply(lambda x: "\n".join(x))
 
-        page_num = (df_text.index + 1) - (settings.first_page_in_book - 1)
+        # page数を合わせる
+        page_ajust = settings.first_page - settings.first_page_in_book -1
+        page_num = df_text.index - page_ajust
 
         # df_textにindexの文字列とchar列を結合する
         df_text = "p." + page_num.astype(str) + "\n" + df_text
@@ -90,8 +98,6 @@ if __name__ == "__main__":
 
         # promptと結合する
         text = settings.order + text
-
-        print(text)
 
         title = df_sub["title"].iloc[0]
 
