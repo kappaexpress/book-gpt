@@ -87,7 +87,7 @@ if __name__ == "__main__":
         df_text = df_sub.groupby(["page_no"])["char"].apply(lambda x: "\n".join(x))
 
         # page数を合わせる
-        page_ajust = settings.first_page - settings.first_page_in_book -1
+        page_ajust = settings.first_page - settings.first_page_in_book
         page_num = df_text.index - page_ajust
 
         # df_textにindexの文字列とchar列を結合する
