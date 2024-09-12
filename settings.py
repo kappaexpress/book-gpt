@@ -1,21 +1,21 @@
 # read_pdf.pyの設定
 # 処理を行う最初のページ（pdfviewerで確認した値）-①
-first_page: int = 32
+first_page: int = 15
 
 # 処理を行う最初のページに記載されているページ数（pdfの画像内にある値）-②
-first_page_in_book: int = 26
+first_page_in_book: int = 1
 
 # 処理を行う最後のページ（pdfviewerで確認した値）-③
-last_page: int = 447
+last_page: int = 317
 
 # pdfのパス
 pdf_path: str = "book.pdf"
 
 # search_split_point_candidate.pyの設定
 # 検索する文字サイズの最小値 -④
-min_font_size: int = 10
+min_font_size: int = 16
 # 検索する文字サイズの最大値 -⑤
-max_font_size: int = 30
+max_font_size: int = 28
 
 
 # create_prompt.pyの設定
