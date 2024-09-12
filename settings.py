@@ -56,7 +56,7 @@ max_tokens: int = 3900
 # 実行時のsleep時間 -⑧
 sleep_time: int = 1
 # 実行時に同時に処理する数 -⑨
-worker_count: int = 10
+worker_count: int = 2
 
 # summary_at_once.pyの設定 -⑩
 file_name: str = "0003.txt"
