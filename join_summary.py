@@ -17,8 +17,10 @@ if __name__ == '__main__':
         with open(summary_path) as f:
             summary = f.read()
         
-        # docxに見出しを追加する
-        doc.add_heading(row['title'], level=1)
+        # もし、titleが0文字だったら、見出しを追加しない
+        if len(row['title']) > 0:
+            # docxにtitleを追加する
+            doc.add_heading(row['title'], level=1)
 
         # docxにsummaryを追加する
         doc.add_paragraph(summary)

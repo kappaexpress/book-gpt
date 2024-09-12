@@ -84,7 +84,8 @@ if __name__ == "__main__":
         print(s, e)
         df_sub = df.loc[s:e, ["title", "char"]]
 
-        df_text = df_sub.groupby(["page_no"])["char"].apply(lambda x: "\n".join(x))
+        df_text = df_sub.groupby(["page_no"])[
+            "char"].apply(lambda x: "\n".join(x))
 
         # page数を合わせる
         page_ajust = settings.first_page - settings.first_page_in_book
@@ -93,22 +94,28 @@ if __name__ == "__main__":
         # df_textにindexの文字列とchar列を結合する
         df_text = "p." + page_num.astype(str) + "\n" + df_text
 
-        # char列を結合する
-        text = "\n".join(df_text)
+        # df_textをsettings.page_countで分割する
+        grouped_df_text = [df_text[i:i+settings.page_count]
+                           for i in range(0, len(df_text), settings.page_count)]
 
-        # promptと結合する
-        text = settings.order.format(text=text)
+        for group in grouped_df_text:
+            # グループ内のテキストを結合
+            text = "\n".join(group)
 
-        title = df_sub["title"].iloc[0]
+            # promptと結合する
+            text = settings.order.format(text=text)
 
-        # promptを保存する 4桁で0埋めする
-        file_name = f"prompt/{file_count:04}.txt"
-        with open(file_name, "w") as f:
-            f.write(text)
+            # タイトルは最初のグループのみ取得
+            title = df_sub["title"].iloc[0] if file_count % 5 == 0 else ""
 
-        file_index.append([file_name, title])
+            # promptを保存する 4桁で0埋めする
+            file_name = f"prompt/{file_count:04}.txt"
+            with open(file_name, "w") as f:
+                f.write(text)
 
-        file_count += 1
+            file_index.append([file_name, title])
+
+            file_count += 1
 
     # index.csvを保存する
     pd.DataFrame(file_index, columns=["file_name", "title"]).to_csv(

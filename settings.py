@@ -19,7 +19,9 @@ max_font_size: int = 28
 
 
 # create_prompt.pyの設定
-# 入力する命令 -⑥
+# プロンプトに一度に入力するぺージ数 -⑥
+page_count: int = 5
+# 入力する命令 -⑦
 order: str = '''# 入力
 {text}
 
@@ -51,10 +53,10 @@ temperature: float = 0.1
 top_p: float = 0.99
 # max_tokensの設定
 max_tokens: int = 3900
-# 実行時のsleep時間 -⑦
+# 実行時のsleep時間 -⑧
 sleep_time: int = 1
-# 実行時に同時に処理する数 -⑧
+# 実行時に同時に処理する数 -⑨
 worker_count: int = 10
 
-# summary_at_once.pyの設定 -⑨
+# summary_at_once.pyの設定 -⑩
 file_name: str = "0003.txt"
