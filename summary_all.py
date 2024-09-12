@@ -6,8 +6,8 @@ import boto3
 import json
 
 
-bedrock_runtime = boto3.client(service_name='bedrock-runtime', region_name='us-west-2')
-model_id = "anthropic.claude-3-opus-20240229-v1:0"
+bedrock_client = boto3.client(service_name='bedrock-runtime', region_name='us-east-1')
+model_id = "anthropic.claude-3-5-sonnet-20240620-v1:0"
 
 
 
@@ -43,22 +43,34 @@ def read_file(file_name: str) -> str:
     return prompt
 
 
-# # GPTを使用してテキストを生成する関数
+# GPTを使用してテキストを生成する関数
 def generate_summary(prompt: str) -> str:
-    body=json.dumps(
+    # メッセージの構成
+    messages = [
         {
-            "anthropic_version": "bedrock-2023-05-31",
-            "max_tokens": settings.max_tokens,
-            "messages": [{"role": "user", "content": prompt}],
-            "top_p": settings.top_p,
-            "temperature": settings.temperature
-        }  
+            "role": "user",
+            "content": [{"text": prompt}],
+        }
+    ]
+    
+    # 推論設定
+    inference_config = {
+        "temperature": settings.temperature,
+        "topP": settings.top_p,
+        "maxTokens": settings.max_tokens,
+        "stopSequences": []
+    }
+    
+    # モデルの呼び出し
+    response = bedrock_client.converse(
+        modelId=model_id,
+        messages=messages,
+        inferenceConfig=inference_config
     )
-
-    response = bedrock_runtime.invoke_model(body=body, modelId=model_id)
-    response_body = json.loads(response.get('body').read())
-    response_text = response_body["content"][0]["text"]
-
+    
+    # レスポンスの解析
+    response_text = response["output"]["message"]["content"][0]["text"]
+    
     return response_text
 
 
