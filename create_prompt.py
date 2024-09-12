@@ -97,6 +97,8 @@ if __name__ == "__main__":
         # df_textをsettings.page_countで分割する
         grouped_df_text = [df_text[i:i+settings.page_count]
                            for i in range(0, len(df_text), settings.page_count)]
+        
+        title = df_sub["title"].iloc[0]
 
         for group in grouped_df_text:
             # グループ内のテキストを結合
@@ -105,15 +107,14 @@ if __name__ == "__main__":
             # promptと結合する
             text = settings.order.format(text=text)
 
-            # タイトルは最初のグループのみ取得
-            title = df_sub["title"].iloc[0] if file_count % 5 == 0 else ""
-
             # promptを保存する 4桁で0埋めする
             file_name = f"prompt/{file_count:04}.txt"
             with open(file_name, "w") as f:
                 f.write(text)
 
             file_index.append([file_name, title])
+
+            title = ""
 
             file_count += 1
 
