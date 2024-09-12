@@ -17,8 +17,8 @@ if __name__ == '__main__':
         with open(summary_path) as f:
             summary = f.read()
         
-        # もし、titleが0文字だったら、見出しを追加しない
-        if len(row['title']) > 0:
+        # もし、titleがnanだったら、見出しを追加しない
+        if not pd.isna(row['title']):
             # docxにtitleを追加する
             doc.add_heading(row['title'], level=1)
 
