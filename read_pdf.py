@@ -10,23 +10,26 @@ import settings
 def dict_to_dataframe_2(texts: dict, page_num: int) -> pd.DataFrame:
     print(f"page_num: {page_num}")
 
-    out = [
-        (
-            char["bbox"][0],
-            char["bbox"][1],
-            char["bbox"][2],
-            char["bbox"][3],
-            char["c"],
-            i_b,
-            i_l,
-            i_s,
-            i_c,
-        )
-        for i_b, block in enumerate(texts["blocks"])
-        for i_l, line in enumerate(block["lines"])
-        for i_s, span in enumerate(line["spans"])
-        for i_c, char in enumerate(span["chars"])
-    ]
+    out = []
+    for i_b, block in enumerate(texts["blocks"]):
+        if "lines" not in block:  # linesキーがない場合はスキップ
+            continue
+            
+        for i_l, line in enumerate(block["lines"]):
+            for i_s, span in enumerate(line["spans"]):
+                for i_c, char in enumerate(span["chars"]):
+                    char_data = (
+                        char["bbox"][0],
+                        char["bbox"][1], 
+                        char["bbox"][2],
+                        char["bbox"][3],
+                        char["c"],
+                        i_b,
+                        i_l,
+                        i_s,
+                        i_c
+                    )
+                    out.append(char_data)
 
     # columnsはx0, y0, x1, y1, char, block_no, line_no, word_no, char_no
     df = pd.DataFrame(
