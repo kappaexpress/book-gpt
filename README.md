@@ -24,6 +24,8 @@ python create_prompt.py
 13. `prompt/XXXX.txt`が生成されるので、確認し、異常があれば修正する
 14. AWSのアクセスキー、シークレットキーを設定する
 ```bash
+aws configure sso
+
 export AWS_ACCESS_KEY_ID="Axxxxxxxxxxxxxxxxxxxxxxx"
 export AWS_SECRET_ACCESS_KEY="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
