@@ -84,8 +84,7 @@ if __name__ == "__main__":
         print(s, e)
         df_sub = df.loc[s:e, ["title", "char"]]
 
-        df_text = df_sub.groupby(["page_no"])[
-            "char"].apply(lambda x: "\n".join(x))
+        df_text = df_sub.groupby(["page_no"])["char"].apply(lambda x: "\n".join(x))
 
         # page数を合わせる
         page_ajust = settings.first_page - settings.first_page_in_book
@@ -95,9 +94,11 @@ if __name__ == "__main__":
         df_text = "p." + page_num.astype(str) + "\n" + df_text
 
         # df_textをsettings.page_countで分割する
-        grouped_df_text = [df_text[i:i+settings.page_count]
-                           for i in range(0, len(df_text), settings.page_count)]
-        
+        grouped_df_text = [
+            df_text[i : i + settings.page_count]
+            for i in range(0, len(df_text), settings.page_count)
+        ]
+
         title = df_sub["title"].iloc[0]
 
         for group in grouped_df_text:

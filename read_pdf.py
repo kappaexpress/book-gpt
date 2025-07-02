@@ -14,20 +14,20 @@ def dict_to_dataframe_2(texts: dict, page_num: int) -> pd.DataFrame:
     for i_b, block in enumerate(texts["blocks"]):
         if "lines" not in block:  # linesキーがない場合はスキップ
             continue
-            
+
         for i_l, line in enumerate(block["lines"]):
             for i_s, span in enumerate(line["spans"]):
                 for i_c, char in enumerate(span["chars"]):
                     char_data = (
                         char["bbox"][0],
-                        char["bbox"][1], 
+                        char["bbox"][1],
                         char["bbox"][2],
                         char["bbox"][3],
                         char["c"],
                         i_b,
                         i_l,
                         i_s,
-                        i_c
+                        i_c,
                     )
                     out.append(char_data)
 

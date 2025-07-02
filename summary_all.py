@@ -3,12 +3,10 @@ import settings
 import os
 import concurrent.futures
 import boto3
-import json
 
 
-bedrock_client = boto3.client(service_name='bedrock-runtime', region_name='us-east-1')
+bedrock_client = boto3.client(service_name="bedrock-runtime", region_name="us-east-1")
 model_id = "us.anthropic.claude-3-5-sonnet-20241022-v2:0"
-
 
 
 # prompt/以下のファイル名をすべて取得する関数
@@ -52,25 +50,23 @@ def generate_summary(prompt: str) -> str:
             "content": [{"text": prompt}],
         }
     ]
-    
+
     # 推論設定
     inference_config = {
         "temperature": settings.temperature,
         "topP": settings.top_p,
         "maxTokens": settings.max_tokens,
-        "stopSequences": []
+        "stopSequences": [],
     }
-    
+
     # モデルの呼び出し
     response = bedrock_client.converse(
-        modelId=model_id,
-        messages=messages,
-        inferenceConfig=inference_config
+        modelId=model_id, messages=messages, inferenceConfig=inference_config
     )
-    
+
     # レスポンスの解析
     response_text = response["output"]["message"]["content"][0]["text"]
-    
+
     return response_text
 
 

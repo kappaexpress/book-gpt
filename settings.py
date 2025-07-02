@@ -22,7 +22,7 @@ max_font_size: int = 28
 # プロンプトに一度に入力するぺージ数 -⑥
 page_count: int = 5
 # 入力する命令 -⑦
-order: str = '''# 入力
+order: str = """# 入力
 {text}
 
 あなたはプロの編集者です。
@@ -44,7 +44,7 @@ order: str = '''# 入力
 # 出力
 以下に要約を箇条書きで作成した。:
  - 
-'''
+"""
 
 # summary.pyの設定
 # temperatureの設定
