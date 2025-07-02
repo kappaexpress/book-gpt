@@ -14,7 +14,7 @@
 		}
 	},
 	"features": {
-		"ghcr.io/devcontainers-contrib/features/poetry:2": {},
+		// "ghcr.io/devcontainers-contrib/features/poetry:2": {},
 		"ghcr.io/devcontainers/features/aws-cli:1": {}
 	}
 
