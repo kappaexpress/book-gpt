@@ -7,7 +7,7 @@ import json
 
 
 bedrock_client = boto3.client(service_name='bedrock-runtime', region_name='us-east-1')
-model_id = "anthropic.claude-3-5-sonnet-20240620-v1:0"
+model_id = "us.anthropic.claude-3-5-sonnet-20241022-v2:0"
 
 
 
